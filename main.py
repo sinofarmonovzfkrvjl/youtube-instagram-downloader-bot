@@ -3,7 +3,7 @@ import logging
 from downloader import YouTubeVideoDownloader, InstagramDownloader
 from os import remove
 
-bot = Bot("5904607271:AAEDJWUULTrD3zV8HOY7JbU94aiXk5Qexno")
+bot = Bot("7436824817:AAE6g7Ecj-B0HVWT58t_VefKFDMibk4BfMU")
 dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start'])
@@ -25,14 +25,15 @@ async def echo(message: types.Message):
             await bot.send_message(chat_id=5230484991, text=f"{e}")
 
         remove("video.mp4")
-    elif message.text.startswith("https://www.instagram.com/") or message.text.startswith("https://instagram.com/") or message.text.startswith("https://www.instagram.com/stories/") or message.text.startswith("httpas://instagram.com/stories/"):
+    elif message.text.startswith("https://www.instagram.com/") or message.text.startswith("https://instagram.com/"):
         downloaded = InstagramDownloader(message.text)
         try:
-            await message.answer_video(video=downloaded['url'], caption=downloaded['description'])
+            await message.answer_video(video=downloaded['url'])
+            await message.answer(downloaded['description'])
         except Exception as e:
             await bot.send_message(chat_id=5230484991, text=f"{e}")
 
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    executor.start_polling(dp, skip_updates=True)
+    executor.start_polling(dp, skip_updates=False)
