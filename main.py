@@ -2,7 +2,6 @@ from aiogram import Bot, Dispatcher, executor, types
 import logging
 from downloader import YouTubeVideoDownloader, InstagramDownloader
 from os import remove
-import shutil
 
 bot = Bot("5904607271:AAEDJWUULTrD3zV8HOY7JbU94aiXk5Qexno")
 dp = Dispatcher(bot)
@@ -26,19 +25,13 @@ async def echo(message: types.Message):
             await bot.send_message(chat_id=5230484991, text=f"{e}")
 
         remove("video.mp4")
-    elif message.text.startswith("https://www.instagram.com/") or message.text.startswith("https://instagram.com/"):
-        downloaded = InstagramVideoDownloader(message.text)
+    elif message.text.startswith("https://www.instagram.com/") or message.text.startswith("https://instagram.com/") or message.text.startswith("https://www.instagram.com/stories/") or message.text.startswith("httpas://instagram.com/stories/"):
+        downloaded = InstagramDownloader(message.text)
         try:
-            with open(downloaded[1][0], 'rb') as video:
-                    with open(downloaded[0], "rb") as comment:
-                        await message.answer_video(video, caption=comment.read().decode("utf-8"))
+            await message.answer_video(video=downloaded['url'], caption=downloaded['description'])
         except Exception as e:
             await bot.send_message(chat_id=5230484991, text=f"{e}")
-    elif message.text.startswith("https://www.instagram.com/stories/") or message.text.startswith("httpas://instagram.com/stories/"):
-        video = InstagramPerfectVideoDownloader(message.text)
-        await message.answer_video(video=video[0]['link'])
-    shutil.rmtree(downloaded[2])
-    remove(video[2])
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)

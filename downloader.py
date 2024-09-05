@@ -1,6 +1,4 @@
 import yt_dlp
-import os
-import glob
 import requests
 
 def YouTubeVideoDownloader(url, save_path='.'):
