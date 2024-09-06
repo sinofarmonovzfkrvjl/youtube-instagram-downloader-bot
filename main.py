@@ -3,7 +3,7 @@ import logging
 from downloader import YouTubeVideoDownloader, InstagramDownloader
 from os import remove
 
-bot = Bot("7436824817:AAE6g7Ecj-B0HVWT58t_VefKFDMibk4BfMU")
+bot = Bot("7307034091:AAFy3nmiPzbErGHfeF5EpvwGJElXSGRcFZI")
 dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start'])
