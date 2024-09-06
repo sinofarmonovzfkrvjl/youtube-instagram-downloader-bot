@@ -2,3 +2,4 @@ aiogram==2.25.1
 requests
 logging
 yt-dlp==2024.08.06
+uvicorn

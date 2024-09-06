@@ -7,7 +7,7 @@ app = FastAPI()
 def run_bot():    
     os.system("python main.py")
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 async def handle_root():
     thread = threading.Thread(target=run_bot, daemon=True)
     thread.start()
