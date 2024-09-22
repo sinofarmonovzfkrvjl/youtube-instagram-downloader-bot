@@ -1,39 +1,66 @@
-from aiogram import Bot, Dispatcher, executor, types
+import asyncio
+from aiogram import Bot, Dispatcher, types
+from aiogram.types import FSInputFile
+from aiogram.filters import CommandStart
 import logging
 from downloader import YouTubeVideoDownloader, InstagramDownloader
 from os import remove
+import requests
 
-bot = Bot("7307034091:AAFy3nmiPzbErGHfeF5EpvwGJElXSGRcFZI")
-dp = Dispatcher(bot)
+dp = Dispatcher()
 
-@dp.message_handler(commands=['start'])
-async def CommandStart(message: types.Message):
-    await message.answer(f"Salom {message.from_user.full_name}")
+@dp.message(CommandStart())
+async def command_start(message: types.Message):
+    await message.answer(f"Salom {message.from_user.full_name}\nmen youtube va instagramdan video yuklovchi botman")
 
-@dp.message_handler()
+@dp.message()
 async def echo(message: types.Message):
-    if message.text.startswith("https://youtube.com/") or message.text.startswith("https://www.youtube.com/") or message.text.startswith("https://youtu.be/"):
+    if message.text.startswith(("https://youtube.com/", "https://www.youtube.com/", "https://youtu.be/")):
         await message.answer("Video yuklanmoqda...")
-
         video = YouTubeVideoDownloader(message.text)
-
+        video_file = FSInputFile("video.mp4")
         try:
-            with open("video.mp4", "rb") as video_file:
-                await message.answer_video(video=video_file, caption=f"Video nomi: {video.get('title')}\nVideo yuklagan shaxs: {video.get('uploader')}\nLayklar soni: {video.get('like_count')}\nDislayklar soni: {video.get('dislike_count')}\nKo'rishlar soni: {video.get('view_count')}\nVideo yuklangan sana: {video.get('upload_date')}")
-                await message.answer(f"Video izohi: {video.get('description')}")
+            await message.answer_video(
+                video=video_file,
+                caption=f"Video nomi: {video.get('title')}\n"
+                        f"Video yuklagan shaxs: {video.get('uploader')}\n"
+                        f"Layklar soni: {video.get('like_count')}\n"
+                        f"Dislayklar soni: {video.get('dislike_count')}\n"
+                        f"Ko'rishlar soni: {video.get('view_count')}\n"
+                        f"Video yuklangan sana: {video.get('upload_date')}"
+            )
+            await message.answer(f"Video izohi: {video.get('description')}")
         except Exception as e:
-            await bot.send_message(chat_id=5230484991, text=f"{e}")
-
+            await message.answer(e)
         remove("video.mp4")
-    elif message.text.startswith("https://www.instagram.com/") or message.text.startswith("https://instagram.com/"):
+    elif message.text.startswith(("https://www.instagram.com/", "https://instagram.com/")):
+        await message.answer("Video yuklanmoqda")
         downloaded = InstagramDownloader(message.text)
-        try:
-            await message.answer_video(video=downloaded['url'])
-            await message.answer(downloaded['description'])
-        except Exception as e:
-            await bot.send_message(chat_id=5230484991, text=f"{e}")
+        response = requests.get(downloaded['url'])
+        if message.text.startswith("https://www.instagram.com/p/"):
+            with open("image.png", "wb") as f:
+                f.write(response.content)
+            try:
+                await message.answer_photo(FSInputFile("image.png"))
+                await message.answer(str(downloaded['description']))
+            except Exception as e:
+                await message.answer(e)
+            remove("image.png")
+        elif message.text.startswith("https://www.instagram.com/reel/"):
+            with open('video.mp4', 'wb') as f:
+                f.write(response.content)
+            try:
+                await message.answer_video(types.FSInputFile("video.mp4"))
+                await message.answer(str(downloaded['description']))
+            except Exception as e:
+                await message.answer("Videoni yuklab bo'lmadi")
+            remove("video.mp4")
 
+async def main():
+
+    bot = Bot(token="7436824817:AAE6g7Ecj-B0HVWT58t_VefKFDMibk4BfMU")
+    await dp.start_polling(bot, polling_timeout=False)
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    executor.start_polling(dp, skip_updates=False)
+    asyncio.run(main())

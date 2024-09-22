@@ -10,5 +10,5 @@ def YouTubeVideoDownloader(url, save_path='.'):
     return yt.extract_info(url, download=False)
 
 def InstagramDownloader(url):
-    res = requests.get("https://instagram-video-downloader-api-h54m.onrender.com/api/v1/download?url=" + url)
-    return {"description": res.json()['description'], "url": f"https://instagram-video-downloader-api-h54m.onrender.com{res.json()['url']}"}
+    res = requests.get(" https://instagram-video-downloader-api-8voc.onrender.com/api/v1/download?url=" + url)
+    return {"description": res.json()['description'], "url": f" https://instagram-video-downloader-api-8voc.onrender.com{res.json()['url']}"}
