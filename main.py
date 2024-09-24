@@ -15,7 +15,7 @@ async def command_start(message: types.Message):
 
 @dp.message()
 async def echo(message: types.Message):
-    if message.text.startswith(("https://youtube.com/", "https://www.youtube.com/", "https://youtu.be/")):
+    if message.text.startswith(("https://youtube.com/", "https://www.youtube.com/", "https://youtu.be/", "https://tiktok.com/", "https://www.tiktok.com/", "https://www.facebook.com/", "https://www.facebook.com")):
         await message.answer("Video yuklanmoqda...")
         video = YouTubeVideoDownloader(message.text)
         video_file = FSInputFile("video.mp4")
