@@ -4,6 +4,7 @@ from aiogram.types import FSInputFile
 from aiogram.filters import CommandStart
 import logging
 from downloader import YouTubeVideoDownloader, InstagramDownloader
+import glob
 from os import remove
 import requests
 
@@ -18,8 +19,8 @@ async def echo(message: types.Message):
     if message.text.startswith(("https://youtube.com/", "https://www.youtube.com/", "https://youtu.be/", "https://tiktok.com/", "https://www.tiktok.com/", "https://www.facebook.com/", "https://www.facebook.com")):
         await message.answer("Video yuklanmoqda...")
         video = YouTubeVideoDownloader(message.text)
-        video_file = FSInputFile("video.mp4")
-        try:
+        video_file = FSInputFile(glob.glob("*.mp4")[0])
+        if video:
             await message.answer_video(
                 video=video_file,
                 caption=f"Video nomi: {video.get('title')}\n"
@@ -30,9 +31,9 @@ async def echo(message: types.Message):
                         f"Video yuklangan sana: {video.get('upload_date')}"
             )
             await message.answer(f"Video izohi: {video.get('description')}")
-        except Exception as e:
-            await message.answer(e)
-        remove("video.mp4")
+        else:
+            await message.answer("Video yuklayolmadim")
+        remove(glob.glob("*.mp4")[0])
     elif message.text.startswith(("https://www.instagram.com/", "https://instagram.com/")):
         await message.answer("Video yuklanmoqda")
         downloaded = InstagramDownloader(message.text)
