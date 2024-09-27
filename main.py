@@ -6,10 +6,8 @@ import logging
 from downloader import YouTubeVideoDownloader, InstagramDownloader
 import glob
 from os import remove
-from config import API_TOKEN
 import requests
-
-bot = Bot(token=API_TOKEN)
+from aiogram.webhook.aiohttp_server import SimpleRequestHandler
 
 dp = Dispatcher()
 
@@ -64,9 +62,11 @@ async def echo(message: types.Message):
             remove("video.mp4")
 
 
-# async def main():
-#     await dp.start_polling(bot, polling_timeout=False)
+async def main():
+    API_TOKEN = "7436824817:AAE6g7Ecj-B0HVWT58t_VefKFDMibk4BfMU"
+    bot = Bot(API_TOKEN)
+    await dp.start_polling(bot, polling_timeout=False)
 
-# if __name__ == '__main__':
-#     logging.basicConfig(level=logging.INFO)
-#     asyncio.run(main())
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
+    asyncio.run(main())
