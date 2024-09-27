@@ -9,7 +9,7 @@ def home():
         return "Alive"
     except:
         return "Not Alive"
-    
+
 def run():
     app.run(host="0.0.0.0", port=8080)
 
