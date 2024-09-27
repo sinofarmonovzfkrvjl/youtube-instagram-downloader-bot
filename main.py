@@ -61,9 +61,8 @@ async def echo(message: types.Message):
                 await message.answer("Videoni yuklab bo'lmadi")
             remove("video.mp4")
 
-
 async def main():
-    API_TOKEN = "7436824817:AAE6g7Ecj-B0HVWT58t_VefKFDMibk4BfMU"
+    API_TOKEN = "7307034091:AAFA4FWLTii3n3eONLDswwY7StXey1mlM0A"
     bot = Bot(API_TOKEN)
     await dp.start_polling(bot, polling_timeout=False)
 
