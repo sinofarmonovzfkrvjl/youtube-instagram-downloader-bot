@@ -10,7 +10,7 @@ async def home():
 
 def run():
     import uvicorn
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    uvicorn.run(app, host='0.0.0.0', port=5000)
 
 def keep_alive():
     server = Thread(target=run)
