@@ -7,11 +7,9 @@ from downloader import YouTubeVideoDownloader, InstagramDownloader
 import glob
 from os import remove
 import requests
-from aiogram.webhook.aiohttp_server import SimpleRequestHandler
-from keep_alive import keep_alive
+from app import keep_alive
 
 keep_alive()
-
 dp = Dispatcher()
 
 @dp.message(CommandStart())
