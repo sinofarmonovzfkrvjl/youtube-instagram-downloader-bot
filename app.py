@@ -1,16 +1,14 @@
-from fastapi import FastAPI
+from flask import Flask
 from threading import Thread
-from fastapi.responses import HTMLResponse
 
-app = FastAPI()
+app = Flask(__name__)
 
-@app.get('/', response_class=HTMLResponse)
-async def home():
+@app.get('/')
+def home():
     return "Alive"
 
 def run():
-    import uvicorn
-    uvicorn.run(app, host='0.0.0.0', port=5000)
+    app.run(app, host='0.0.0.0', port=5000)
 
 def keep_alive():
     server = Thread(target=run)
