@@ -7,8 +7,10 @@ app = FastAPI()
 @app.get('/', response_class=HTMLResponse)
 async def home():
     return "Alive"
+
 def run():
-    app.run(host="0.0.0.0", port=8080)
+    import uvicorn
+    uvicorn.run(app, host='0.0.0.0', port=8000)
 
 def keep_alive():
     server = Thread(target=run)
